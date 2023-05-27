@@ -1,5 +1,6 @@
 package com.vodafone.service;
 
+import com.vodafone.errorhandling.NotFoundException;
 import com.vodafone.model.Author;
 import com.vodafone.repository.AuthorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ public class AuthorServiceImpl implements AuthorService{
     AuthorRepo authorRepo;
     @Override
     public Author getAuthorById(int id) {
-        return authorRepo.getReferenceById(id);
+        return authorRepo.findById(id).orElseThrow(
+                ()-> new NotFoundException(String.format("The Author with id '%s' was not found", id)));
     }
 }
