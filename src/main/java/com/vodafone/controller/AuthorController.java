@@ -2,6 +2,7 @@ package com.vodafone.controller;
 
 import com.vodafone.model.Author;
 import com.vodafone.service.AuthorService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,6 @@ public class AuthorController {
 
     @GetMapping(value = "/author/{id}")
     public ResponseEntity<Author> getAuthorById(@PathVariable(name = "id") int id) {
-        return ResponseEntity.ok(authorService.getAuthorById(id));
+        return new ResponseEntity<>(authorService.getAuthorById(id), HttpStatus.OK);
     }
 }
