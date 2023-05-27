@@ -17,8 +17,8 @@ public class ArticleController {
 
 
     @GetMapping(value = "/articles/{id}")
-    public Article getArticleById(@PathVariable(name = "id") Integer id) {
-        return articleService.getArticleById(id);
+    public ResponseEntity<Article> getArticleById(@PathVariable(name = "id") Integer id) {
+        return new ResponseEntity<>(articleService.getArticleById(id), HttpStatus.OK);
     }
 
     @PostMapping(value = "/articles", produces = {"application/json"}, consumes = {"application/json"})
@@ -37,9 +37,8 @@ public class ArticleController {
 
 
     @DeleteMapping(value = "/articles/{id}", produces = {"application/json"})
-    public ResponseEntity<Article> deleteArticle(@PathVariable(name = "id") Integer id) {
-        articleService.deleteArticle(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Boolean> deleteArticle(@PathVariable(name = "id") Integer id) {
+        return new ResponseEntity<>(articleService.deleteArticle(id),HttpStatus.NO_CONTENT);
     }
 
     @PutMapping(value = "/articles/{id}", produces = {"application/json"}, consumes = {"application/json"})
