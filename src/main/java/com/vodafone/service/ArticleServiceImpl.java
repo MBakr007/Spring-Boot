@@ -1,5 +1,6 @@
 package com.vodafone.service;
 
+import com.vodafone.errorhandling.DuplicateEntityException;
 import com.vodafone.model.Article;
 import com.vodafone.repository.ArticleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import java.util.List;
 @Service
 public class ArticleServiceImpl implements ArticleService{
     @Autowired
-    private ArticleRepo articleRepo;
+    ArticleRepo articleRepo;
 
     @Override
     public List<Article> getAllArticles() {
@@ -36,20 +37,39 @@ public class ArticleServiceImpl implements ArticleService{
 
     @Override
     public Article addArticle(Article article) {
+        if (article.getAuthor() == null) {
+            throw new NullPointerException("the author is empty.");
+        }
+        else if (isArticleExist(article.getId())) {
+            throw new DuplicateEntityException("This article is already exist.");
+        }
         return articleRepo.save(article);
     }
 
     @Override
-    public void deleteArticle(Integer id) {
+    public boolean deleteArticle(Integer id) {
+        if (!isArticleExist(id)) {
+            throw new NotFoundException("this article doesn't exist.");
+        }
         articleRepo.deleteById(id);
+        return true;
     }
 
     @Override
     public Article updateArticle(Integer id, Article article) {
+        if (!isArticleExist(id)) {
+            throw new NotFoundException("This article doesn't exist.");
+        }
+        else if (article == null) {
+            throw new NullPointerException("The article is empty.");
+        }
         Article tmpArticle = articleRepo.getReferenceById(id);
         tmpArticle.setName(article.getName());
         tmpArticle.setAuthor(article.getAuthor());
         return articleRepo.save(tmpArticle);
     }
 
+    public boolean isArticleExist(int articleId) {
+        return articleRepo.existsById(articleId);
+    }
 }
