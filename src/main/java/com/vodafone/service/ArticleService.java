@@ -9,7 +9,7 @@ public interface ArticleService {
     List<Article> getArticlesByAuthorName(String authorName);
     Article addArticle(Article article);
 
-    void deleteArticle(Integer id);
+    boolean deleteArticle(Integer id);
 
     Article updateArticle(Integer id, Article article);
 }
