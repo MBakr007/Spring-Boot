@@ -1,8 +1,8 @@
 package com.vodafone.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -10,6 +10,8 @@ import java.util.List;
 @Table(name = "author")
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,5 +19,11 @@ public class Author {
     private String name;
 
     @OneToMany(mappedBy = "author")
+    @JsonManagedReference
     private List<Article> articles;
+
+    public Author(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
