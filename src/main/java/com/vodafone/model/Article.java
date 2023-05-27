@@ -1,13 +1,15 @@
 package com.vodafone.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "article")
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,5 +17,7 @@ public class Article {
     @Column
     private String name;
     @ManyToOne
+    @JsonBackReference
     private Author author;
+
 }
