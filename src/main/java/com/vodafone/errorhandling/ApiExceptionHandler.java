@@ -20,6 +20,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, apiException.getStatus());
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ErrorDetails> handleApiException(NullPointerException nullPointerException ){
+        ErrorDetails errorDetails = new ErrorDetails();
+        errorDetails.setMessage(nullPointerException.getMessage());
+        return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
+    }
     //@Override
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails();
